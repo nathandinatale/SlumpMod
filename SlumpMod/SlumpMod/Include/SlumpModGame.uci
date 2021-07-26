@@ -81,6 +81,23 @@ function bool FindInactivePRI(PlayerController PC)
     return false;
 }
 
+function StartRound()
+{
+    local AOCPlayerController PC;
+
+     // Reset everyone's stats before starting the game for the first time
+    if (bBeforeFirstRound)
+    {
+        foreach WorldInfo.AllControllers(class'AOCPlayerController', PC)
+        {
+            AOCPRI(PC.PlayerReplicationInfo).PreSeamlessTravelReset();
+            AOCPRI(PC.PlayerReplicationInfo).bNetDirty = true;
+        }
+    }
+
+    super.StartRound();
+}
+
 
 DefaultProperties
 {
