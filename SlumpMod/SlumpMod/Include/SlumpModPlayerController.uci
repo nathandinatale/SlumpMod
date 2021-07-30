@@ -274,6 +274,18 @@ exec function PerformAim() {
 		StartFire(1);
 }
 
+reliable server function ServerPerformFeint()
+{
+    if (Pawn.Weapon.IsInState('Active') || Pawn.Weapon.IsInState('Feint'))
+        return;
+
+    AOCPawn(Pawn).OnActionInitiated(EACT_Feint);
+    AOCWeapon(Pawn.Weapon).DoFeintAttack();
+
+    `{GAMEMODE}PRI(PlayerReplicationInfo).Feints += 1;
+}
+
+
 DefaultProperties
 {
     suicideDelay = 1.0f
