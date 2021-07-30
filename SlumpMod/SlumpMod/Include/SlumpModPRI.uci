@@ -10,7 +10,10 @@ var int TeamDamageTaken,
         LightShoveHits,
         HeavyShoveHits,
         Parries,
-        Blocks;
+        Blocks,
+        Crouches,
+        Jumps,
+        Dodges;
 var float StaminaRegenerated;
 
 
@@ -19,7 +22,9 @@ replication
     if (bNetDirty && bNetOwner)
         TeamDamageTaken, EnemyStaminaDamageDealt, TeamStaminaDamageDealt, EnemyStaminaDamageTaken, TeamStaminaDamageTaken,
         HealthRegenerated, StaminaRegenerated,
-        Feints, MeleeHits, ProjectileHits, LightShoveHits, HeavyShoveHits, Parries, Blocks;
+        Feints, MeleeHits, ProjectileHits, LightShoveHits, HeavyShoveHits,
+        Parries, Blocks,
+        Crouches, Jumps, Dodges;
 }
 
 
@@ -41,6 +46,9 @@ function PreSeamlessTravelReset()
     HeavyShoveHits = 0;
     Parries = 0;
     Blocks = 0;
+    Crouches = 0;
+    Jumps = 0;
+    Dodges = 0;
 }
 
 function CopyProperties(PlayerReplicationInfo PRI)
@@ -63,4 +71,7 @@ function CopyProperties(PlayerReplicationInfo PRI)
     `{GAMEMODE}PRI(PRI).HeavyShoveHits = HeavyShoveHits;
     `{GAMEMODE}PRI(PRI).Parries = Parries;
     `{GAMEMODE}PRI(PRI).Blocks = Blocks;
+    `{GAMEMODE}PRI(PRI).Crouches = Crouches;
+    `{GAMEMODE}PRI(PRI).Jumps = Jumps;
+    `{GAMEMODE}PRI(PRI).Dodges = Dodges;
 }

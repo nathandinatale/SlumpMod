@@ -678,6 +678,49 @@ simulated function bool DetectSuccessfulParry(out HitInfo Info, out int bParry, 
 
 }
 
+reliable server function ServerPerformCrouch(bool bCrouch)
+{
+    local bool removeCrouch;
+
+    removeCrouch = true;
+
+    if (StateVariables.bCanCrouch)
+    {
+        bIsCrouching = bCrouch;
+        if(bCrouch) 
+        {
+            removeCrouch = false;
+            OnActionInitiated(EACT_Crouch);
+            OnActionSucceeded(EACT_Crouch);
+            AddDebuff(true, EDEBF_CROUCH, CROUCH_MODIFY, -1.0f, false);
+
+            `{GAMEMODE}PRI(Controller.PlayerReplicationInfo).Crouches += 1;
+        }
+        else
+        {
+            removeCrouch = true;
+        }
+    }
+
+    if( removeCrouch )
+    {
+        bIsCrouching = false;
+        RemoveDebuff(EDEBF_CROUCH);	
+    }
+}
+
+function bool DoJump( bool bUpdating )
+{
+    local bool bSuccess;
+
+    bSuccess = super.DoJump(bUpdating);
+
+    if (bSuccess)
+        `{GAMEMODE}PRI(Controller.PlayerReplicationInfo).Jumps += 1;
+
+    return bSuccess;
+}
+
 function int CalcDodgeCost() {
 	if (StateVariables.bIsParrying) {
 		return PawnFamily.iDodgeCost + 10.0f;
@@ -703,6 +746,8 @@ reliable server function ServerStartDodge(byte direction, byte WeaponId) {
 
 	// Consume extra stamina
 	ConsumeStamina(CalcDodgeCost() - PawnFamily.iDodgeCost);
+
+    `{GAMEMODE}PRI(Controller.PlayerReplicationInfo).Dodges += 1;
 }
 
 function bool StartDodge(int direction)
