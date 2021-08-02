@@ -278,6 +278,34 @@ reliable server function S_AdminForceSpectate(String PlayerName) {
     S_AdminBroadcastMessage("AdminForceSpectate "$AOCPRI(Target.PlayerReplicationInfo).GetHumanReadableName());
 }
 
+exec function AdminForceSpectateAll() {
+    S_AdminForceSpectateAll();
+}
+
+reliable server function S_AdminForceSpectateAll() {
+    local AOCPlayerController Target;
+
+    if (!IsAdmin()) {
+        ClientDisplayConsoleMessage("You are not logged in as an administrator on this server.");
+        return;
+    }
+
+    foreach WorldInfo.AllControllers(class'AOCPlayerController', Target)
+    {
+        if (Target.CurrentFamilyInfo.class == class'AOCFamilyInfo_Agatha_King' ||
+            Target.CurrentFamilyInfo.class == class'AOCFamilyInfo_Mason_King' ||
+            Target.PlayerReplicationInfo.bAdmin
+        ) {
+            ClientDisplayConsoleMessage("'" $ Target.PlayerReplicationInfo.GetHumanReadableName() $ "' cannot be forced to spectate.");
+            continue;
+        }
+
+        Target.JoinSpectatorTeam();
+    }
+
+    S_BroadcastServerMessage("AdminForceSpectateAll");
+}
+
 exec function Reload() {
 	if(!ScriptBlockedInputs[EINBLOCK_Reload] && SlumpModWeapon_Crossbow(Pawn.Weapon) != none)
 		SlumpModWeapon_Crossbow(Pawn.Weapon).ActivateReload();
