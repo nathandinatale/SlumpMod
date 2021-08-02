@@ -43,7 +43,7 @@ DefaultProperties
 
 
 	//This is the name that shows in the server browser for this mod:
-	ModDisplayString="SlumpMod v1.0.0"
+	ModDisplayString="SlumpMod v2.0"
 
 	Families.Empty;
 

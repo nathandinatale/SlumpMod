@@ -16,8 +16,7 @@ DefaultProperties
 	NewSecondaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Cudgel')
 
 	NewTertiaryWeapons.empty;
-	NewTertiaryWeapons(0)=(CWeapon=class'AOCWeapon_PaviseShield_Agatha',bEnabledDefault=false)
-	NewTertiaryWeapons(1)=(CWeapon=class'SlumpModWeapon_Buckler_Agatha',bEnabledDefault=false)
+	NewTertiaryWeapons(0)=(CWeapon=class'SlumpModWeapon_HuntingKnife',CorrespondingDuelProp=EDUEL_HuntingKnifeUse)
 
 	ProjectileLocationModifiers(EHIT_Head) = 2.655
 	ProjectileLocationModifiers(EHIT_Torso) = 1.75
@@ -28,6 +27,39 @@ DefaultProperties
 
 
 	DamageResistances(EDMG_Swing) = 1.1
+
+	AirSpeed=440.0
+	WaterSpeed=220.0
+	AirControl=0.35
+	GroundSpeed=190.0
+	AccelRate=500.0
+	SprintAccelRate=100.0
+	JumpZ=380.0
+	SprintModifier=1.65
+	SprintTime=10.0
+	DodgeSpeed=400.0
+	DodgeSpeedZ=200.0
+	Health=100
+	BACK_MODIFY=0.8
+	STRAFE_MODIFY=0.85
+	FORWARD_MODIFY=1.0
+	CROUCH_MODIFY=0.65
+	MaxSprintSpeedTime=3.5
+	bCanDodge=false
+	iKickCost=25
+	iDodgeCost=40
+	fComboAggressionBonus=1.0
+	fBackstabModifier=1.0
+	iMissMeleeStrikePenalty=10
+	iMissMeleeStrikePenaltyBonus=0
+	bCanSprintAttack=false
+	fStandingSpread=0.05f
+	fCrouchingSpread=0.0f
+	fWalkingSpread=0.1
+	fSprintingSpread=0.25
+	fFallingSpread=0.25
+	fSpreadPenaltyPerSecond=0.5
+	fSpreadRecoveryPerSecond=0.3
 
 
 }

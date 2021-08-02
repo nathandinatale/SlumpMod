@@ -20,12 +20,9 @@ DefaultProperties
 	NewSecondaryWeapons(2)=(CWeapon=class'SlumpModWeapon_HolyWaterSprinkler')
 	NewSecondaryWeapons(3)=(CWeapon=class'SlumpModWeapon_Broadsword')
 	NewSecondaryWeapons(4)=(CWeapon=class'SlumpModWeapon_Falchion')
-	NewSecondaryWeapons(5)=(CWeapon=class'SlumpModWeapon_NorseSword')
-	NewSecondaryWeapons(6)=(CWeapon=class'SlumpModWeapon_Hatchet')
-	NewSecondaryWeapons(7)=(CWeapon=class'SlumpModWeapon_WarAxe')
-	NewSecondaryWeapons(8)=(CWeapon=class'SlumpModWeapon_Dane')
-	NewSecondaryWeapons(9)=(CWeapon=class'SlumpModWeapon_Flail')
-	NewSecondaryWeapons(10)=(CWeapon=class'SlumpModWeapon_HFlail')
+	NewSecondaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Hatchet')
+	NewSecondaryWeapons(6)=(CWeapon=class'SlumpModWeapon_WarAxe')
+	NewSecondaryWeapons(7)=(CWeapon=class'SlumpModWeapon_Dane')
 
 	NewTertiaryWeapons.empty;
 	NewTertiaryWeapons(0)=(CWeapon=class'SlumpModWeapon_HuntingKnife',CorrespondingDuelProp=EDUEL_HuntingKnifeUse)
