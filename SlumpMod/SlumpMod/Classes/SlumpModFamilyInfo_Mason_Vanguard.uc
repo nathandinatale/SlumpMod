@@ -7,8 +7,6 @@ DefaultProperties
 	NewPrimaryWeapons(0)=(CWeapon=class'SlumpModWeapon_Greatsword',CorrespondingDuelProp=EDUEL_GreatswordUse)
 	NewPrimaryWeapons(1)=(CWeapon=class'SlumpModWeapon_Claymore',CorrespondingDuelProp=EDUEL_ClaymoreUse)
 	NewPrimaryWeapons(2)=(CWeapon=class'SlumpModWeapon_Zweihander',CorrespondingDuelProp=EDUEL_ZweihanderUse)
-	NewPrimaryWeapons(3)=(CWeapon=class'SlumpModWeapon_Spear',CorrespondingDuelProp=EDUEL_SpearUse)
-	NewPrimaryWeapons(4)=(CWeapon=class'SlumpModWeapon_Fork',CorrespondingDuelProp=EDUEL_ForkUse)
 	NewPrimaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Brandistock',CorrespondingDuelProp=EDUEL_BrandistockUse)
 	NewPrimaryWeapons(6)=(CWeapon=class'SlumpModWeapon_Bardiche',CorrespondingDuelProp=EDUEL_BardicheUse)
 	NewPrimaryWeapons(7)=(CWeapon=class'SlumpModWeapon_Bill',CorrespondingDuelProp=EDUEL_BillUse)
