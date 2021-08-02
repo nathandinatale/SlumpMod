@@ -1,3 +1,4 @@
+var string OriginalName;
 var int AllDamageTaken,
         TeamDamageTaken,
         EnemyStaminaDamageDealt,
@@ -84,4 +85,40 @@ function CopyProperties(PlayerReplicationInfo PRI)
     `{GAMEMODE}PRI(PRI).Jumps = Jumps;
     `{GAMEMODE}PRI(PRI).Dodges = Dodges;
     `{GAMEMODE}PRI(PRI).Chatter = Chatter;
+
+    /*
+        Preserve the original name which the player joined with.
+
+        Why this is not done in a single line using either:
+
+            - A dynamic cast for the current gamemode: `{GAMEMODE}PRI(PRI)...
+                This fails because the current gamemode is not always the one we are transitioning to.
+
+            - A common parent: SlumpModPRI(PRI)...
+                This is preferably avoided since one must exclude the AOC leaf classes from the new class's heritage.
+
+        Isn't that epic?
+     */
+    SlumpModAOCDuelPRI(PRI).OriginalName = OriginalName;
+    SlumpModCDWDuelPRI(PRI).OriginalName = OriginalName;
+    SlumpModCTFPRI(PRI).OriginalName = OriginalName;
+    SlumpModFFAPRI(PRI).OriginalName = OriginalName;
+    SlumpModKOTHPRI(PRI).OriginalName = OriginalName;
+    SlumpModLTSPRI(PRI).OriginalName = OriginalName;
+    SlumpModTDPRI(PRI).OriginalName = OriginalName;
+    SlumpModTOPRI(PRI).OriginalName = OriginalName;
+    SlumpModTUTPRI(PRI).OriginalName = OriginalName;
+}
+
+
+function SaveOriginalName()
+{
+    if (OriginalName == "")
+        OriginalName = PlayerName;
+}
+
+function RestoreOriginalName()
+{
+    if (OriginalName != "" && OriginalName != PlayerName)
+        SetPlayerName(OriginalName);
 }
