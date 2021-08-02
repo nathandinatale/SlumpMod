@@ -904,7 +904,7 @@ function CalculateMatchMakingOnComplete(HttpRequestInterface OriginalRequest, Ht
     {
         RankedAPI.BroadcastMessageToAll("");
         RankedAPI.BroadcastMessageToAll("Remote service was unable to make a match.");
-        if (data.GetStringValue("error") != none)
+        if (data.GetStringValue("error") != "")
             RankedAPI.BroadcastMessageToAll("error: '" @ data.GetStringValue("error") @ "'");
         RankedAPI.BroadcastMessageToAll("Trying again in" @ fRankedModeMatchMakeInterval @ "seconds...");
         RankedAPI.BroadcastMessageToAll("");
