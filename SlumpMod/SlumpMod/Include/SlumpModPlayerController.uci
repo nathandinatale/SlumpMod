@@ -303,7 +303,7 @@ reliable server function S_AdminForceSpectateAll() {
         Target.JoinSpectatorTeam();
     }
 
-    S_BroadcastServerMessage("AdminForceSpectateAll");
+    S_AdminBroadcastMessage("AdminForceSpectateAll");
 }
 
 exec function Reload() {
