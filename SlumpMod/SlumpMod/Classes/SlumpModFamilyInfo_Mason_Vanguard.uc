@@ -7,11 +7,10 @@ DefaultProperties
 	NewPrimaryWeapons(0)=(CWeapon=class'SlumpModWeapon_Greatsword',CorrespondingDuelProp=EDUEL_GreatswordUse)
 	NewPrimaryWeapons(1)=(CWeapon=class'SlumpModWeapon_Claymore',CorrespondingDuelProp=EDUEL_ClaymoreUse)
 	NewPrimaryWeapons(2)=(CWeapon=class'SlumpModWeapon_Zweihander',CorrespondingDuelProp=EDUEL_ZweihanderUse)
-	NewPrimaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Brandistock',CorrespondingDuelProp=EDUEL_BrandistockUse)
-	NewPrimaryWeapons(6)=(CWeapon=class'SlumpModWeapon_Bardiche',CorrespondingDuelProp=EDUEL_BardicheUse)
-	NewPrimaryWeapons(7)=(CWeapon=class'SlumpModWeapon_Bill',CorrespondingDuelProp=EDUEL_BillUse)
-	NewPrimaryWeapons(8)=(CWeapon=class'SlumpModWeapon_Halberd',CorrespondingDuelProp=EDUEL_HalberdUse)
-	NewPrimaryWeapons(9)=(CWeapon=class'SlumpModWeapon_PoleHammer',CorrespondingDuelProp=EDUEL_PoleHammerUse)
+	NewPrimaryWeapons(3)=(CWeapon=class'SlumpModWeapon_Bardiche',CorrespondingDuelProp=EDUEL_BardicheUse)
+	NewPrimaryWeapons(4)=(CWeapon=class'SlumpModWeapon_Bill',CorrespondingDuelProp=EDUEL_BillUse)
+	NewPrimaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Halberd',CorrespondingDuelProp=EDUEL_HalberdUse)
+	NewPrimaryWeapons(6)=(CWeapon=class'SlumpModWeapon_PoleHammer',CorrespondingDuelProp=EDUEL_PoleHammerUse)
 
 	NewSecondaryWeapons.empty;
 	NewSecondaryWeapons(0)=(CWeapon=class'SlumpModWeapon_Dagesse',CorrespondingDuelProp=EDUEL_DagesseUse)
@@ -22,7 +21,6 @@ DefaultProperties
 	NewSecondaryWeapons(5)=(CWeapon=class'SlumpModWeapon_Dane',CorrespondingDuelProp=EDUEL_DaneUse)
 	NewSecondaryWeapons(6)=(CWeapon=class'SlumpModWeapon_Broadsword')
 	NewSecondaryWeapons(7)=(CWeapon=class'SlumpModWeapon_Falchion')
-	NewSecondaryWeapons(8)=(CWeapon=class'SlumpModWeapon_NorseSword')
 
 	NewTertiaryWeapons.empty;
 	NewTertiaryWeapons(0)=(CWeapon=class'SlumpModWeapon_HuntingKnife',CorrespondingDuelProp=EDUEL_HuntingKnifeUse)
