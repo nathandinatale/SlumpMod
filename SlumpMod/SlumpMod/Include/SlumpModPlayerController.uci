@@ -148,6 +148,11 @@ reliable server function ActualUnpause() {
     }
 }*/
 
+function LocalRequestJoinClass(byte inClass)
+{
+    Request_JoinClass(inClass);
+}
+
 exec function GetAdmins() {
     S_GetAdmins();
 }
@@ -164,6 +169,15 @@ reliable server function S_GetAdmins() {
 reliable client function NotifyTournamentWaiting(float Threshold) {
 	bShowedTournamentWaitingMessage = true;
 }
+
+exec function AdminTournamentMode(optional bool bEnable = true)
+{
+    ClientDisplayConsoleMessage("Deprecated: use 'Admin TournamentMode' instead");
+    ClientDisplayConsoleMessage("Disable: Admin TournamentMode 0");
+    ClientDisplayConsoleMessage("Enable: Admin TournamentMode 1");
+}
+
+reliable server function S_AdminTournamentMode(bool bEnable) {}
 
 reliable server function S_SendF10Message() {
     ReceiveChatMessage("You will implode in 1 second.", EFAC_ALL, false, false, ,false);
@@ -264,6 +278,34 @@ reliable server function S_AdminForceSpectate(String PlayerName) {
     S_AdminBroadcastMessage("AdminForceSpectate "$AOCPRI(Target.PlayerReplicationInfo).GetHumanReadableName());
 }
 
+exec function AdminForceSpectateAll() {
+    S_AdminForceSpectateAll();
+}
+
+reliable server function S_AdminForceSpectateAll() {
+    local AOCPlayerController Target;
+
+    if (!IsAdmin()) {
+        ClientDisplayConsoleMessage("You are not logged in as an administrator on this server.");
+        return;
+    }
+
+    foreach WorldInfo.AllControllers(class'AOCPlayerController', Target)
+    {
+        if (Target.CurrentFamilyInfo.class == class'AOCFamilyInfo_Agatha_King' ||
+            Target.CurrentFamilyInfo.class == class'AOCFamilyInfo_Mason_King' ||
+            Target.PlayerReplicationInfo.bAdmin
+        ) {
+            ClientDisplayConsoleMessage("'" $ Target.PlayerReplicationInfo.GetHumanReadableName() $ "' cannot be forced to spectate.");
+            continue;
+        }
+
+        Target.JoinSpectatorTeam();
+    }
+
+    S_AdminBroadcastMessage("AdminForceSpectateAll");
+}
+
 exec function Reload() {
 	if(!ScriptBlockedInputs[EINBLOCK_Reload] && SlumpModWeapon_Crossbow(Pawn.Weapon) != none)
 		SlumpModWeapon_Crossbow(Pawn.Weapon).ActivateReload();
@@ -273,6 +315,124 @@ exec function PerformAim() {
 	if (class<SlumpModWeapon_Crossbow>(Pawn.Weapon.Class) != none)
 		StartFire(1);
 }
+
+reliable server function ServerPerformFeint()
+{
+    if (Pawn.Weapon.IsInState('Active') || Pawn.Weapon.IsInState('Feint'))
+        return;
+
+    AOCPawn(Pawn).OnActionInitiated(EACT_Feint);
+    AOCWeapon(Pawn.Weapon).DoFeintAttack();
+
+    `{GAMEMODE}PRI(PlayerReplicationInfo).Feints += 1;
+}
+
+exec function ShowStats()
+{
+    local `{GAMEMODE}PRI PRI;
+
+    PRI = `{GAMEMODE}PRI(PlayerReplicationInfo);
+
+    ClientDisplayConsoleMessage("--------------------------------------------------");
+    ClientDisplayConsoleMessage("--------------------------------------------------");
+    ClientDisplayConsoleMessage("Score:"   @ PRI.Score);
+    ClientDisplayConsoleMessage("Kills:"   @ PRI.NumKills);
+    ClientDisplayConsoleMessage("Deaths:"  @ PRI.Deaths);
+    ClientDisplayConsoleMessage("Assists:" @ PRI.NumAssists);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Health:");
+    ClientDisplayConsoleMessage("    Regenerated:"        @ PRI.HealthRegenerated);
+    ClientDisplayConsoleMessage("    Damage Received:");
+    ClientDisplayConsoleMessage("        from all:"       @ PRI.AllDamageTaken);
+    ClientDisplayConsoleMessage("        from enemies:"   @ PRI.DamageTaken);
+    ClientDisplayConsoleMessage("        from teammates:" @ PRI.TeamDamageTaken);
+    ClientDisplayConsoleMessage("    Damage Dealt:");
+    ClientDisplayConsoleMessage("        to enemies:"     @ PRI.EnemyDamageDealt);
+    ClientDisplayConsoleMessage("        to teammates:"   @ PRI.TeamDamageDealt);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Stamina:");
+    ClientDisplayConsoleMessage("    Regenerated:"        @ PRI.StaminaRegenerated);
+    ClientDisplayConsoleMessage("    Damage Received:");
+    ClientDisplayConsoleMessage("        from all:"       @ PRI.AllStaminaConsumed);
+    ClientDisplayConsoleMessage("        from enemies:"   @ PRI.EnemyStaminaDamageTaken);
+    ClientDisplayConsoleMessage("        from teammates:" @ PRI.TeamStaminaDamageTaken);
+    ClientDisplayConsoleMessage("    Damage Dealt:");
+    ClientDisplayConsoleMessage("        to enemies:"     @ PRI.EnemyStaminaDamageDealt);
+    ClientDisplayConsoleMessage("        to teammates:"   @ PRI.TeamStaminaDamageDealt);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Feints:" @ PRI.Feints);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Attacks:");
+    ClientDisplayConsoleMessage("    Total:"      @ PRI.NumAttacks);
+    ClientDisplayConsoleMessage("    Successful:" @ PRI.NumHits);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Hits:");
+    ClientDisplayConsoleMessage("    Melee:"       @ PRI.MeleeHits);
+    ClientDisplayConsoleMessage("    Projectile:"  @ PRI.ProjectileHits);
+    ClientDisplayConsoleMessage("    Light Shove:" @ PRI.LightShoveHits);
+    ClientDisplayConsoleMessage("    Heavy Shove:" @ PRI.HeavyShoveHits);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Parries:" @ PRI.Parries);
+    ClientDisplayConsoleMessage("Blocks:"  @ PRI.Blocks);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Crouches:" @ PRI.Crouches);
+    ClientDisplayConsoleMessage("Jumps:"    @ PRI.Jumps);
+    ClientDisplayConsoleMessage("Dodges:"   @ PRI.Dodges);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Objective Points:" @ PRI.ObjPoints);
+    ClientDisplayConsoleMessage("");
+    ClientDisplayConsoleMessage("Decapitations:"    @ PRI.NumDecaps);
+    ClientDisplayConsoleMessage("Chatter:"    @ PRI.Chatter);
+    ClientDisplayConsoleMessage("--------------------------------------------------");
+    ClientDisplayConsoleMessage("--------------------------------------------------");
+}
+
+reliable client function OverrideVoteText(optional string Primary, optional string Secondary)
+{
+    AOCBaseHUD(myHUD).HUD.MainHUD.VotePrimaryTitle.SetText(Primary);
+    AOCBaseHUD(myHUD).HUD.MainHUD.VoteSecondaryTitle.SetText(Secondary);
+}
+
+exec function VoteTournamentMode(bool bEnable)
+{
+    ServerVoteTournamentMode(bEnable);
+}
+
+reliable server function ServerVoteTournamentMode(bool bEnable)
+{
+    `{GAMEMODE} (WorldInfo.Game).InitiateVoteTournamentMode(self, bEnable);
+}
+
+exec function VoteRankedMode(bool bEnable)
+{
+    ServerVoteRankedMode(bEnable);
+}
+
+reliable server function ServerVoteRankedMode(bool bEnable)
+{
+    `{GAMEMODE} (WorldInfo.Game).InitiateVoteRankedMode(self, bEnable);
+}
+
+exec function VoteRankedTeamSize(int Size)
+{
+    ServerVoteRankedTeamSize(Size);
+}
+
+reliable server function ServerVoteRankedTeamSize(int Size)
+{
+    `{GAMEMODE} (WorldInfo.Game).InitiateVoteRankedTeamSize(self, Size);
+}
+
+exec function VoteRestartMapAfterEndGame(bool bEnable)
+{
+    ServerVoteRestartMapAfterEndGame(bEnable);
+}
+
+reliable server function ServerVoteRestartMapAfterEndGame(bool bEnable)
+{
+    `{GAMEMODE} (WorldInfo.Game).InitiateVoteRestartMapAfterEndGame(self, bEnable);
+}
+
 
 DefaultProperties
 {
