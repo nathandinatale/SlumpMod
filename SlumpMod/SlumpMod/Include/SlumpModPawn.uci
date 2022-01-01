@@ -1,3 +1,8 @@
+var float fLastParryTimeSeconds;                // The game time at which the pawn last parried
+var float fSuccessiveParryStaminaReward;        // How much stamina is rewarded for rewardable parries
+var float fSuccessiveParryThresholdSeconds;     // The maximum time in seconds after the pawn's last parry that they are eligible for reward
+
+
 simulated function bool ShouldActivateFlinch(HitInfo Info, class<AOCWeapon> UsedWeapon) {
 	// If the weapon is set never to flinch, don't flinch
 	if (UsedWeapon.default.bNeverFlinch)
@@ -522,6 +527,8 @@ simulated function bool DetectSuccessfulParry(out HitInfo Info, out int bParry, 
 	local int StaminaDamage;
 	local bool bOutOfStamina;
     local bool bSameTeam;
+    local float fParryTimeSeconds;
+    local bool bRewardableParry;
 
 
     bSameTeam = IsOnSameTeam(self, Info.HitActor);
@@ -616,11 +623,18 @@ simulated function bool DetectSuccessfulParry(out HitInfo Info, out int bParry, 
 	else if (Info.HitActor.StateVariables.bIsParrying) {
 		AOCWeaponAttachment(Info.HitActor.CurrentWeaponAttachment).PlayParrySound(false);
 
-		// Lose 15 stamina for projectiles, otherwise calculate stamina loss
-		if (Info.DamageType.default.bIsProjectile)
-			StaminaDamage = 15.0f;
-		else
-			StaminaDamage = AOCWeapon(Info.HitActor.Weapon).CalculateParryDamage(AOCWeapon(Info.Instigator.Weapon), Info.AttackType);
+        fParryTimeSeconds = WorldInfo.TimeSeconds;
+        bRewardableParry = SlumpModPawn(Info.HitActor).fLastParryTimeSeconds > 0 &&
+                           fParryTimeSeconds - SlumpModPawn(Info.HitActor).fLastParryTimeSeconds <= fSuccessiveParryThresholdSeconds;
+        SlumpModPawn(Info.HitActor).fLastParryTimeSeconds = fParryTimeSeconds;
+
+        // Take no stamina damage if within successive parry reward threshold, lose 15 stamina for projectiles, otherwise calculate stamina loss
+        if (bRewardableParry)
+            StaminaDamage = 0.0f;
+        else if (Info.DamageType.default.bIsProjectile)
+            StaminaDamage = 15.0f;
+        else
+            StaminaDamage = AOCWeapon(Info.HitActor.Weapon).CalculateParryDamage(AOCWeapon(Info.Instigator.Weapon), Info.AttackType);
 
 		// Enter stun state if the player is out of stamina
 		if (!Info.HitActor.HasEnoughStamina(StaminaDamage)) {
@@ -667,7 +681,10 @@ simulated function bool DetectSuccessfulParry(out HitInfo Info, out int bParry, 
 		if(bOutOfStamina)
 			return true;
 
-		Info.HitActor.ConsumeStamina(StaminaDamage);
+        if (bRewardableParry)
+            Info.HitActor.ConsumeStamina(- fSuccessiveParryStaminaReward);
+        else
+            Info.HitActor.ConsumeStamina(StaminaDamage);
 
 		// Parry means health damage is completely negated
 		Info.HitDamage = 0.0f;
@@ -732,7 +749,7 @@ reliable server function ServerPerformCrouch(bool bCrouch)
     if (StateVariables.bCanCrouch)
     {
         bIsCrouching = bCrouch;
-        if(bCrouch) 
+        if(bCrouch)
         {
             removeCrouch = false;
             OnActionInitiated(EACT_Crouch);
@@ -750,7 +767,7 @@ reliable server function ServerPerformCrouch(bool bCrouch)
     if( removeCrouch )
     {
         bIsCrouching = false;
-        RemoveDebuff(EDEBF_CROUCH);	
+        RemoveDebuff(EDEBF_CROUCH);
     }
 }
 
@@ -922,6 +939,9 @@ DefaultProperties
 {
 	HealthTimeElapse=0.0
 	HealAmount=3.0
+
+    fSuccessiveParryStaminaReward=5
+    fSuccessiveParryThresholdSeconds=1
 
 	Begin Object Name=OuterCylinder
 	    CollisionRadius=+0039.000000
