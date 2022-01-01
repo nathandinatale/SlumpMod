@@ -940,8 +940,8 @@ DefaultProperties
 	HealthTimeElapse=0.0
 	HealAmount=3.0
 
-    fSuccessiveParryStaminaReward=5
-    fSuccessiveParryThresholdSeconds=1
+    fSuccessiveParryStaminaReward=20
+    fSuccessiveParryThresholdSeconds=0.5
 
 	Begin Object Name=OuterCylinder
 	    CollisionRadius=+0039.000000
