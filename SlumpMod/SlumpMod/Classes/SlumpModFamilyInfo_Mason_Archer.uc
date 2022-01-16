@@ -27,7 +27,10 @@ DefaultProperties
 	CrossbowLocationModifiers(EHIT_Torso) = 2.25
 	CrossbowLocationModifiers(EHIT_Arm) = 2.25
 
-	DamageResistances(EDMG_Swing) = 1.1
+
+	DamageResistances(EDMG_Swing) = 0.85
+	DamageResistances(EDMG_Pierce) = 0.85
+	DamageResistances(EDMG_Blunt) = 0.65
 
 	AirSpeed=440.0
 	WaterSpeed=220.0
