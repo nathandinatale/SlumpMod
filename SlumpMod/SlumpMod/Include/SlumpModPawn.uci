@@ -940,9 +940,8 @@ DefaultProperties
 	HealthTimeElapse=0.0
 	HealAmount=3.0
 
-    fSuccessiveParryStaminaReward=20
-    fSuccessiveParryThresholdSeconds=0.5
-
+    fSuccessiveParryStaminaReward=35
+    fSuccessiveParryThresholdSeconds=0.75
 	CustomizationClass=class'SlumpModCustomization'
 
 	Begin Object Name=OuterCylinder
