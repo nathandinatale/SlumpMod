@@ -1,3 +1,5 @@
+var SlumpModCustomizationContent CustomizationBaseDummy;
+
 reliable server function bool IsAdmin() {
     return WorldInfo.Game.AccessControl.IsAdmin(self) || WorldInfo.NetMode == NM_Standalone;
 }
@@ -437,4 +439,5 @@ reliable server function ServerVoteRestartMapAfterEndGame(bool bEnable)
 DefaultProperties
 {
     suicideDelay = 1.0f
+    CustomizationClass=class'SlumpModCustomization'
 }

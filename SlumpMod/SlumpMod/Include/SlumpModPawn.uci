@@ -943,6 +943,8 @@ DefaultProperties
     fSuccessiveParryStaminaReward=20
     fSuccessiveParryThresholdSeconds=0.5
 
+	CustomizationClass=class'SlumpModCustomization'
+
 	Begin Object Name=OuterCylinder
 	    CollisionRadius=+0039.000000
 	    CollisionHeight=+0065.000000

@@ -1,0 +1,1 @@
+class SlumpModGFx_HUDManager extends AOCGFx_HUDManager;
